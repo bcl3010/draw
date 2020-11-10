@@ -60,15 +60,18 @@
 #define ID_ECTANGLE                     32771
 #define ID_TRIANGLE                     32772
 #define ID_ARROW                        32774
-#define ID_BUTTON4                      32775
 #define ID_LINE                         32775
+#define ID_FILLCOLOR_LINE               32776
+#define ID_FILLCOLOR_IN                 32777
+#define ID_BUTTON2                      32778
+#define ID_SAVE                         32778
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32776
+#define _APS_NEXT_COMMAND_VALUE         32779
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

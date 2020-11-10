@@ -22,7 +22,7 @@
 
 #include "drawDoc.h"
 #include "drawView.h"
-
+#include "MainFrm.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -46,6 +46,9 @@ BEGIN_MESSAGE_MAP(CdrawView, CView)
 	ON_COMMAND(ID_TRIANGLE, &CdrawView::OnTriangle)
 	ON_COMMAND(ID_ARROW, &CdrawView::OnArrow)
 	ON_COMMAND(ID_LINE, &CdrawView::OnLine)
+	ON_COMMAND(ID_FILLCOLOR_LINE, &CdrawView::OnFillcolorLine)
+	ON_COMMAND(ID_FILLCOLOR_IN, &CdrawView::OnFillcolorIn)
+	ON_COMMAND(ID_SAVE, &CdrawView::OnSave)
 END_MESSAGE_MAP()
 
 // CdrawView 构造/析构
@@ -258,4 +261,111 @@ void CdrawView::OnLine()
 	pDoc->graphList.push_front(new line(50, 50, 100, 100));
 
 	Invalidate();
+}
+
+
+void CdrawView::OnFillcolorLine()
+{
+	// TODO: 在此添加命令处理程序代码
+	CdrawDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+
+	CMFCRibbonColorButton* a = (CMFCRibbonColorButton*)((pFrame->m_wndRibbonBar).FindByID(ID_FILLCOLOR_LINE));
+	COLORREF c = a->GetColor();
+
+	std::list<graph*>::iterator v;
+	for (v = pDoc->graphList.begin(); v != pDoc->graphList.end(); ++v) {
+		(*v)->SetFillColor(c);
+	}
+	Invalidate();
+
+}
+
+
+void CdrawView::OnFillcolorIn()
+{
+	// TODO: 在此添加命令处理程序代码
+	CdrawDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+
+	CMFCRibbonColorButton* a = (CMFCRibbonColorButton*)((pFrame->m_wndRibbonBar).FindByID(ID_FILLCOLOR_IN));
+	COLORREF c = a->GetColor();
+
+	std::list<graph*>::iterator v;
+	for (v = pDoc->graphList.begin(); v != pDoc->graphList.end(); ++v) {
+		(*v)->SetBorderColor(c);
+	}
+	Invalidate();
+}
+
+
+void CdrawView::OnSave()
+{
+	// TODO: 在此添加命令处理程序代码
+	CClientDC dc(this);
+	CRect rect;
+	CString saveFilePath;
+	BOOL  showMsgTag;
+	BOOL saveTag = FALSE;
+	GetClientRect(&rect);
+	HBITMAP hbitmap = CreateCompatibleBitmap(dc, rect.right - rect.left, rect.bottom - rect.top);
+	HDC hdc = CreateCompatibleDC(dc);
+	HBITMAP hOldMap = (HBITMAP)SelectObject(hdc, hbitmap);
+	BitBlt(hdc, 0, 0, rect.right - rect.left, rect.bottom - rect.top, dc, 0, 0, SRCCOPY);
+	CImage image;
+	image.Attach(hbitmap);
+	if (!saveTag)
+	{
+		saveTag = TRUE;
+		showMsgTag = TRUE;
+		CString  strFilter = _T("位图文件(*.bmp)|*.bmp|JPEG 图像文件|*.jpg|  GIF图像文件 | *.gif | PNG图像文件 | *.png |其他格式(*.*) | *.* || ");
+		CFileDialog dlg(FALSE, _T("bmp"), _T("iPaint1.bmp"), NULL, strFilter);
+		if (dlg.DoModal() != IDOK) return;
+		CString strFileName;
+		CString strExtension;
+		strFileName = dlg.m_ofn.lpstrFile;
+		if (dlg.m_ofn.nFileExtension == 0)
+		{
+			switch (dlg.m_ofn.nFilterIndex)
+			{
+			case 1:
+				strExtension = "bmp";
+				break;
+			case 2:
+				strExtension = "jpg";
+				break;
+			case 3:
+				strExtension = "gif";
+				break;
+			case 4:
+				strExtension = "png";
+				break;
+
+			}
+			strFileName = strFileName + "." + strExtension;
+		}
+		saveFilePath = strFileName;
+	}
+	else
+	{
+		showMsgTag = FALSE;
+	}
+	HRESULT hResult = image.Save(saveFilePath);
+	if (FAILED(hResult)) {
+		MessageBox(_T("保存图像文件失败！"));
+	}
+	else
+	{
+		if (showMsgTag)
+			MessageBox(_T("文件保存成功！"));
+	}
+	image.Detach();
+	SelectObject(hdc, hOldMap);
+
 }

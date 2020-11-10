@@ -47,7 +47,7 @@ public:
 #endif
 
 protected:  // 控件条嵌入成员
-	CMFCRibbonBar     m_wndRibbonBar;
+	//CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;
 	CMFCToolBarImages m_PanelImages;
 	CMFCRibbonStatusBar  m_wndStatusBar;
@@ -55,7 +55,8 @@ protected:  // 控件条嵌入成员
 	CMFCShellTreeCtrl m_wndTree;
 	CCalendarBar      m_wndCalendar;
 	CMFCCaptionBar    m_wndCaptionBar;
-
+public:
+	CMFCRibbonBar     m_wndRibbonBar;
 // 生成的消息映射函数
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

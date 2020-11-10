@@ -69,10 +69,46 @@ void CdrawDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: 在此添加存储代码
+		ar << graphList.size();
+		for (auto it = graphList.begin(); it != graphList.end(); it++) {
+			ar << (*it)->getGraphID();
+			(*it)->Serialize(ar);
+		}
 	}
 	else
 	{
 		// TODO: 在此添加加载代码
+		for (auto it = graphList.begin(); it != graphList.end(); it++) {
+			delete* it;
+		}
+		graphList.clear();
+		int i, gid;
+		ar >> i;
+		graph* g;
+		while (i--) {
+			ar >> gid;
+			switch (gid)
+			{
+			case 1:
+				g = new line();
+				break;
+			case 2:
+				g = new rectangle();
+				break;
+			case 3:
+				g = new triangle(0, 0, 0, 0);
+				break;
+			case 4:
+				g = new arrow(0, 0, 0, 0);
+				break;
+			default:
+				g = new graph();
+				break;
+			}
+
+			g->Serialize(ar);
+			graphList.push_back(g);
+		}
 	}
 }
 

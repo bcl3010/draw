@@ -61,6 +61,9 @@ public:
 	afx_msg void OnTriangle();
 	afx_msg void OnArrow();
 	afx_msg void OnLine();
+	afx_msg void OnFillcolorLine();
+	afx_msg void OnFillcolorIn();
+	afx_msg void OnSave();
 };
 
 #ifndef _DEBUG  // drawView.cpp 中的调试版本
