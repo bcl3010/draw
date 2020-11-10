@@ -27,6 +27,10 @@
 #include <afxext.h>         // MFC 扩展
 #include "graph.h"
 #include "rectangle.h"
+
+#include "triangle.h"
+#include "arrow.h"
+#include "line.h"
 #include <list>
 #include <afxdisp.h>        // MFC 自动化类
 

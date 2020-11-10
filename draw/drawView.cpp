@@ -43,6 +43,9 @@ BEGIN_MESSAGE_MAP(CdrawView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
+	ON_COMMAND(ID_TRIANGLE, &CdrawView::OnTriangle)
+	ON_COMMAND(ID_ARROW, &CdrawView::OnArrow)
+	ON_COMMAND(ID_LINE, &CdrawView::OnLine)
 END_MESSAGE_MAP()
 
 // CdrawView 构造/析构
@@ -215,4 +218,44 @@ void CdrawView::OnMouseMove(UINT nFlags, CPoint point)
 	Invalidate();
 	//CView::OnMouseMove(nFlags, point);
 
+}
+
+
+void CdrawView::OnTriangle()//三角形
+{
+	// TODO: 在此添加命令处理程序代码
+	CdrawDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	pDoc->graphList.push_front(new triangle(50, 50, 100, 100));
+
+	Invalidate();
+
+}
+
+
+void CdrawView::OnArrow()
+{
+	// TODO: 在此添加命令处理程序代码
+	CdrawDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	pDoc->graphList.push_front(new arrow(50, 50, 100, 100));
+
+	Invalidate();
+}
+
+
+void CdrawView::OnLine()
+{
+	// TODO: 在此添加命令处理程序代码
+	CdrawDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	pDoc->graphList.push_front(new line(50, 50, 100, 100));
+
+	Invalidate();
 }
